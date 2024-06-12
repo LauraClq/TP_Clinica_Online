@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavVarComponent } from './nav-var.component';
+import { FormPacienteComponent } from './form-paciente.component';
 
-describe('NavVarComponent', () => {
-  let component: NavVarComponent;
-  let fixture: ComponentFixture<NavVarComponent>;
+describe('FormPacienteComponent', () => {
+  let component: FormPacienteComponent;
+  let fixture: ComponentFixture<FormPacienteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavVarComponent]
+      imports: [FormPacienteComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(NavVarComponent);
+    fixture = TestBed.createComponent(FormPacienteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

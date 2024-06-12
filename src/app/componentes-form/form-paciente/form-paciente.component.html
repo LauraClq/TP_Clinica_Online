@@ -1,0 +1,151 @@
+<form [formGroup]="formularioPaciente" (ngSubmit)="registroPaciente()">
+<div class="input-box form-floating mb-3">
+   <input
+      type="text"
+      class="form-control"
+      id="inputNombre"
+      placeholder="Ingrese su nombre"
+      formControlName="nombre"
+      />
+   <i class="fa-regular fa-user icon"></i>
+   <label for="inputNombre">Nombre</label>
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['nombre'].errors &&
+   formularioPaciente.controls['nombre'].touched
+   "
+   >
+   <div *ngIf="formularioPaciente.controls['nombre'].errors['required']">
+      Error, ingrese su nombre.
+   </div>
+   <div *ngIf="formularioPaciente.controls['nombre'].errors['pattern']">
+      Error, solo se permite letras.
+   </div>
+</div>
+<div class="input-box form-floating mb-3">
+   <input
+      type="text"
+      class="form-control"
+      id="inputApellido"
+      placeholder="Ingrese su apellido"
+      formControlName="apellido"
+      />
+   <i class="fa-regular fa-user icon"></i>
+   <label for="inputApellido">Apellido</label>
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['apellido'].errors &&
+   formularioPaciente.controls['apellido'].touched
+   "
+   >
+   <div *ngIf="formularioPaciente.controls['apellido'].errors['required']">
+      Error, ingrese su apellido.
+   </div>
+   <div *ngIf="formularioPaciente.controls['apellido'].errors['pattern']">
+      Error, solo se permite letras.
+   </div>
+</div>
+<div class="input-box">
+   <label for="dni" class="form-label">DNI</label>
+   <input type="text" class="form-control" id="dni" formControlName="dni" />
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['dni'].errors &&
+   formularioPaciente.controls['dni'].touched
+   "
+   >
+   <label *ngIf="formularioPaciente.controls['dni'].errors['required']"
+      >Error, ingrese su DNI.</label
+      >
+   <label *ngIf="formularioPaciente.controls['dni'].errors['pattern']"
+      >Error, el DNI debe ser de 8 números.</label
+      >
+</div>
+<div class="input-box form-floating mb-3">
+   <input
+      type="text"
+      class="form-control"
+      id="inputObraSocial"
+      placeholder="Ingrese su obra social"
+      formControlName="obraSocial"
+      />
+   <i class="fa-regular fa-user icon"></i>
+   <label for="inputObraSocial">Obra Social</label>
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['obraSocial'].errors &&
+   formularioPaciente.controls['obraSocial'].touched
+   "
+   >
+   <div *ngIf="formularioPaciente.controls['obraSocial'].errors['required']">
+      Error, ingrese su obra social.
+   </div>
+   <div *ngIf="formularioPaciente.controls['obraSocial'].errors['pattern']">
+      Error, solo se permite letras.
+   </div>
+</div>
+<div class="input-box form-floating mb-3">
+   <input
+      type="email"
+      class="form-control"
+      id="inputEmail"
+      placeholder="Ingrese su email"
+      formControlName="email"
+      autocomplete="email"
+      />
+   <i class="fa-regular fa-envelope icon"></i>
+   <label for="inputEmail">Email</label>
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['email'].errors &&
+   formularioPaciente.controls['email'].touched
+   "
+   >
+   <div *ngIf="formularioPaciente.controls['email'].errors['required']">
+      Error, ingrese el email.
+   </div>
+   <div *ngIf="formularioPaciente.controls['email'].errors['pattern']">
+      Error, ingrese un email válido.
+   </div>
+</div>
+<div class="input-box form-floating mb-3">
+   <input
+      type="password"
+      class="form-control"
+      id="inputPassword"
+      formControlName="password"
+      placeholder="Ingrese su contraseña"
+      autocomplete="password"
+      />
+   <i class="fa-solid fa-lock icon"></i>
+   <label for="inputPassword">Password</label>
+</div>
+<div
+   class="validators"
+   *ngIf="
+   formularioPaciente.controls['password'].errors &&
+   formularioPaciente.controls['password'].touched
+   "
+   >
+   <div *ngIf="formularioPaciente.controls['password'].errors['required']">
+      Error, ingrese la contraseña.
+   </div>
+   <div *ngIf="formularioPaciente.controls['password'].errors['mimlength']">
+      Ingresar como minimo 5 caracteres
+   </div>
+   <div *ngIf="formularioPaciente.controls['password'].errors['maxlength']">
+      Solo se permite hasta 10 caracteres.
+   </div>
+</div>
+<button class="btn-registro" [disabled]="formularioPaciente.invalid">Registrarse</button>
+</form>

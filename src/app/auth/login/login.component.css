@@ -1,0 +1,13 @@
+.container-fluid {
+    height: 100vh;
+}
+
+.profile {
+    height: 100px;
+}
+
+.background {
+    background-image: url('../../../assets/login-imagen.jpg');
+    background-size: cover;
+    background-position: center;
+}
