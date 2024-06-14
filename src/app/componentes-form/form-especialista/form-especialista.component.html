@@ -1,0 +1,67 @@
+<form [formGroup]="formularioEspecialista" (ngSubmit)="registroEspecialista()">
+   <div class="input-box form-floating mb-3">
+      <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese su nombre" formControlName="nombre"/>
+      <i class="fa-regular fa-user icon"></i>
+      <label for="inputNombre">Nombre</label>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['nombre'].errors && formularioEspecialista.controls['nombre'].touched">
+      <div *ngIf="formularioEspecialista.controls['nombre'].errors['required']">Error, ingrese su nombre.</div>
+      <div *ngIf="formularioEspecialista.controls['nombre'].errors['pattern']">Error, solo se permite letras.</div>
+   </div>
+   <div class="input-box form-floating mb-3">
+      <input type="text" class="form-control" id="inputApellido" placeholder="Ingrese su apellido" formControlName="apellido"/>
+      <i class="fa-regular fa-user icon"></i>
+      <label for="inputApellido">Apellido</label>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['apellido'].errors && formularioEspecialista.controls['apellido'].touched">
+      <div *ngIf="formularioEspecialista.controls['apellido'].errors['required']">Error, ingrese su apellido.</div>
+      <div *ngIf="formularioEspecialista.controls['apellido'].errors['pattern']">Error, solo se permite letras.</div>
+   </div>
+   <div class="input-box">
+      <label for="dni" class="form-label">DNI</label>
+      <input type="text" class="form-control" id="dni" formControlName="dni"/>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['dni'].errors && formularioEspecialista.controls['dni'].touched">
+      <label *ngIf="formularioEspecialista.controls['dni'].errors['required']">Error, ingrese su DNI.</label>
+      <label *ngIf="formularioEspecialista.controls['dni'].errors['pattern']">Error, el DNI debe ser de 8 números.</label>
+   </div>
+   <div class="input-box form-floating mb-3">
+      <select type="text" id="especialidades" formControlName="especidalidad" required> //agregra lista 
+        <option>Dermatologo</option>
+        <option>Traumatologo</option>
+      </select>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['obraSocial'].errors && formularioPaciente.controls['obraSocial'].touched">
+      <div *ngIf="formularioEspecialista.controls['obraSocial'].errors['required']">Error, ingrese su obra social.</div>
+      <div *ngIf="formularioEspecialista.controls['obraSocial'].errors['pattern']">Error, solo se permite letras.</div>
+   </div>
+   <div class="input-box form-floating mb-3">
+      <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su email" formControlName="email" autocomplete="email"/>
+      <i class="fa-regular fa-envelope icon"></i>
+      <label for="inputEmail">Email</label>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['email'].errors && formularioEspecialista.controls['email'].touched">
+      <div *ngIf="formularioEspecialista.controls['email'].errors['required']">Error, ingrese el email.</div>
+      <div *ngIf="formularioEspecialista.controls['email'].errors['pattern']">Error, ingrese un email válido.</div>
+   </div>
+   <div class="input-box form-floating mb-3">
+   <input type="password" class="form-control" id="inputPassword" formControlName="password" placeholder="Ingrese su contraseña" autocomplete="password"/>
+      <i class="fa-solid fa-lock icon"></i>
+      <label for="inputPassword">Password</label>
+   </div>
+   <div class="validators" *ngIf="formularioEspecialista.controls['password'].errors && formularioEspecialista.controls['password'].touched">
+      <div *ngIf="formularioEspecialista.controls['password'].errors['required']">Error, ingrese la contraseña.</div>
+      <div *ngIf="formularioEspecialista.controls['password'].errors['minlength']">Ingresar como minimo 5 caracteres</div>
+      <div *ngIf="formularioEspecialista.controls['password'].errors['maxlength']">Solo se permite hasta 10 caracteres.</div>
+   </div>
+   <div class="row mb-2">
+      <div class="col-8 text-start">
+         <label for="imagen_a" class="form-label">Imágen de perfil</label>
+         <input class="form-control form-control-sm" id="imagen_perfil" type="file"/>
+      </div>
+      <div class="col-3">
+         <img [src]="" alt="Foto de perfil">
+      </div>
+   </div>
+   <button class="btn-registro" [disabled]="formularioEspecialista.invalid">Registrarse</button>
+</form>

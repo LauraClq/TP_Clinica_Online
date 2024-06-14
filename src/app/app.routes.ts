@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { BienvenidoComponent } from './features/bienvenido/bienvenido.component';
 import { FormPacienteComponent } from './componentes-form/form-paciente/form-paciente.component';
+import { LoginComponent } from './auth/login/login.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: BienvenidoComponent,
+    component: LoginComponent,
   },
   {
     path: 'paciente',

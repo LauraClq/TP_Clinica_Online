@@ -1,1 +1,27 @@
+<div class="container">
+  <div class="background">
+    <h1 class="mb-4">¡Bienvenido!</h1>
+    <h5>Administrá tu información: cobertura, trámites y gestiones médicas. Todo en un mismo lugar, mucho más fácil.</h5>
+    <button class="btn btn-info p-3 mt-3" routerLink="/registro">Registrate</button>
+  </div>
+  <div class="login-container">
+    <mat-card class="login-card">
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Ingrese su email">
+          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">Ingrese su email</mat-error>
+          <mat-error *ngIf="loginForm.controls['email'].hasError('email')">Ingrese un email válido</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Ingrese su contraseña">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('required')">Ingrese su contraseña</mat-error>
+          <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')">La contraseña debe tener al menos 5 caracteres</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+      </form>
+    </mat-card>
+  </div>
+</div>
 
