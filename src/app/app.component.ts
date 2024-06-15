@@ -14,17 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSelectModule,
-    MatInputModule
+    RouterOutlet
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

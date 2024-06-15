@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Paciente } from '../../auth/models/usuario.model';
 
 @Component({
   selector: 'app-form-paciente',
@@ -11,6 +12,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class FormPacienteComponent {
   public formularioPaciente: FormGroup;
+  @Output() emitPaciente = new EventEmitter<Paciente>();
 
   constructor(private fromBuilder: FormBuilder) {
     this.formularioPaciente = this.fromBuilder.group({
@@ -40,5 +42,57 @@ export class FormPacienteComponent {
     });
   }
 
-  registroPaciente(): void {}
+  get nombre() {
+    return this.formularioPaciente.get('nombre')!;
+  }
+
+  get apellido() {
+    return this.formularioPaciente.get('apellido')!;
+  }
+
+  get edad() {
+    return this.formularioPaciente.get('edad')!;
+  }
+
+  get dni() {
+    return this.formularioPaciente.get('dni')!;
+  }
+
+  get obraSocial() {
+    return this.formularioPaciente.get('obraSocial')!;
+  }
+
+  get email() {
+    return this.formularioPaciente.get('email')!;
+  }
+
+  get password() {
+    return this.formularioPaciente.get('password')!;
+  }
+
+  get imagen_a() {
+    return this.formularioPaciente.get('imagen_perfil')!;
+  }
+
+  get imagen_b() {
+    return this.formularioPaciente.get('imagen_perfil2')!;
+  }
+
+  registroPaciente(): void {
+    if (this.formularioPaciente.valid) {
+      const unPaciente = new Paciente(
+        this.nombre.value,
+        this.apellido.value,
+        this.edad.value,
+        this.dni.value,
+        this.email.value,
+        this.imagen_a.value,
+        this.imagen_b.value,
+        this.obraSocial.value,
+        false
+      );
+
+      
+    }
+  }
 }
