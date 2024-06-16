@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Paciente } from '../../auth/models/usuario.model';
+
 
 @Component({
   selector: 'app-form-paciente',
@@ -12,9 +18,15 @@ import { Paciente } from '../../auth/models/usuario.model';
 })
 export class FormPacienteComponent {
   public formularioPaciente: FormGroup;
+  public urlImagenPerfil1: string | ArrayBuffer;
+  public urlImagenPerfil2: string | ArrayBuffer;
+  public fileImagenPerfil1: string;
+  public fileImagenPerfil2: string;
+
   @Output() emitPaciente = new EventEmitter<Paciente>();
 
   constructor(private fromBuilder: FormBuilder) {
+  
     this.formularioPaciente = this.fromBuilder.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
@@ -36,63 +48,73 @@ export class FormPacienteComponent {
           Validators.maxLength(10),
           Validators.minLength(5),
         ],
-      ],
-      imagen_perfil: ['', [Validators.required]],
-      imagen_perfil2: ['', [Validators.required]],
+      ]
     });
   }
 
   get nombre() {
-    return this.formularioPaciente.get('nombre')!;
+    return this.formularioPaciente.get('nombre');
   }
-
   get apellido() {
-    return this.formularioPaciente.get('apellido')!;
+    return this.formularioPaciente.get('apellido');
   }
-
   get edad() {
-    return this.formularioPaciente.get('edad')!;
+    return this.formularioPaciente.get('edad');
   }
-
   get dni() {
-    return this.formularioPaciente.get('dni')!;
+    return this.formularioPaciente.get('dni');
   }
-
   get obraSocial() {
-    return this.formularioPaciente.get('obraSocial')!;
+    return this.formularioPaciente.get('obraSocial');
   }
-
   get email() {
-    return this.formularioPaciente.get('email')!;
-  }
-
-  get password() {
-    return this.formularioPaciente.get('password')!;
-  }
-
-  get imagen_a() {
-    return this.formularioPaciente.get('imagen_perfil')!;
-  }
-
-  get imagen_b() {
-    return this.formularioPaciente.get('imagen_perfil2')!;
+    return this.formularioPaciente.get('email');
   }
 
   registroPaciente(): void {
     if (this.formularioPaciente.valid) {
+  
       const unPaciente = new Paciente(
         this.nombre.value,
         this.apellido.value,
         this.edad.value,
-        this.dni.value,
+        Number(this.dni.value),
         this.email.value,
-        this.imagen_a.value,
-        this.imagen_b.value,
-        this.obraSocial.value,
-        false
+        this.formularioPaciente.value.password,
+        this.fileImagenPerfil1,
+        this.fileImagenPerfil2,
+        this.obraSocial.value
       );
 
-      
+      console.log('Un paciente', unPaciente);
+      //this.emitPaciente.emit(unPaciente);
+    } else {
+      console.log('Error formulario invalido');
     }
   }
+
+  //Evento -Almacenar las imagenes seleccionadas
+  imagenPerfil1(event: any) {
+    const file = event.target.files[0]; //obtengo la imagen seleccionada
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.urlImagenPerfil1 = reader.result;
+      this.fileImagenPerfil1 = reader.result as string;
+      //console.log('imagen1', this.fileImagenPerfil1);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  imagenPerfil2(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.urlImagenPerfil2 = reader.result;
+      this.fileImagenPerfil2 = reader.result as string;
+      //console.log('imagen2', this.fileImagenPerfil2);
+    };
+    reader.readAsDataURL(file);
+  }
 }
+
+

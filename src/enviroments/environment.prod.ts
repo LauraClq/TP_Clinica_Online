@@ -1,12 +1,11 @@
 export const environment = {
-  production: false,
+  production: true,
   firebaseConfig: {
-    apiKey: 'AIzaSyAqwH1sI8KjxlGfePWBj5oqB63R9J5W6r8',
-    authDomain: 'clinica-online-hosting.firebaseapp.com',
-    projectId: 'clinica-online-hosting',
-    storageBucket: 'clinica-online-hosting.appspot.com',
-    messagingSenderId: '1098410678156',
-    appId: '1:1098410678156:web:47d348a93dc4fdcdc668a9',
-    measurementId: 'G-XMLGGT96X6',
+    apiKey: 'AIzaSyB4Zqu7y6WMjHnjJ_Vkq2km1_f_pVlFCws',
+    authDomain: 'clinicaonline-93c14.firebaseapp.com',
+    projectId: 'clinicaonline-93c14',
+    storageBucket: 'clinicaonline-93c14.appspot.com',
+    messagingSenderId: '439229751980',
+    appId: '1:439229751980:web:7be874b5cc5a1beaab3509',
   },
 };

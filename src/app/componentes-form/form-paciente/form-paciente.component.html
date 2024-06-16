@@ -1,4 +1,4 @@
-<form [formGroup]="formularioPaciente" (ngSubmit)="registroPaciente()">
+<form [formGroup]="formularioPaciente" (ngSubmit)="registroPaciente">
    <div class="input-box form-floating mb-3">
       <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese su nombre" formControlName="nombre"/>
       <i class="fa-regular fa-user icon"></i>
@@ -12,6 +12,14 @@
       <input type="text" class="form-control" id="inputApellido" placeholder="Ingrese su apellido" formControlName="apellido"/>
       <i class="fa-regular fa-user icon"></i>
       <label for="inputApellido">Apellido</label>
+   </div>
+   <div class="col-md-6">
+      <label for="edad" class="form-label">Edad</label>
+      <input type="number" class="form-control" id="edad" formControlName="edad">
+      <div class="validators" *ngIf="formularioPaciente.controls['edad'].errors && formularioPaciente.controls['edad'].touched">
+         <label *ngIf="formularioPaciente.controls['edad'].errors['required']">Error, ingrese su edad.</label>
+         <label *ngIf="formularioPaciente.controls['edad'].errors['min']">Debe ser mayor de 18 años para registrarse.</label>
+      </div>
    </div>
    <div class="validators" *ngIf="formularioPaciente.controls['apellido'].errors && formularioPaciente.controls['apellido'].touched">
       <div *ngIf="formularioPaciente.controls['apellido'].errors['required']">Error, ingrese su apellido.</div>
@@ -55,21 +63,22 @@
    </div>
    <div class="row mb-2">
       <div class="col-8 text-start">
-         <label for="imagen_a" class="form-label">Imágen de perfil 1</label>
-         <input class="form-control form-control-sm" id="imagen_a" type="file"/>
+        <label for="imagen_a" class="form-label">Imágen de perfil 1</label>
+        <input class="form-control form-control-sm" id="imagen_a" type="file" (change)="imagenPerfil1($event)" />
       </div>
       <div class="col-3">
-         <img [src]="" alt="Foto de perfil">
+        <img *ngIf="urlImagenPerfil1" [src]="urlImagenPerfil1" alt="Foto de perfil">
       </div>
-   </div>
-   <div class="row mb-2">
+  </div>
+  <div class="row mb-2">
       <div class="col-8 text-start">
          <label for="imagen_b" class="form-label">Imágen de perfil 2</label>
-         <input class="form-control form-control-sm" id="imagen_b" type="file"/>
-      </div>
+         <input class="form-control form-control-sm" id="imagen_b" type="file" (change)="imagenPerfil2($event)" />
+       </div>
       <div class="col-3">
-         <img [src]="" alt="Foto de perfil">
+         <img *ngIf="urlImagenPerfil2" [src]="urlImagenPerfil2" alt="Foto de perfil">
       </div>
-   </div>
-   <button class="btn-registro" [disabled]="formularioPaciente.invalid">Registrarse</button>
+  </div>
+   <button type="submit" class="btn-registro" [disabled]="formularioPaciente.invalid" (click)="registroPaciente()">Registrarse</button>
+   {{formularioPaciente.value | json}}
 </form>
