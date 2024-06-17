@@ -52,42 +52,23 @@ export class FormPacienteComponent {
     });
   }
 
-  get nombre() {
-    return this.formularioPaciente.get('nombre');
-  }
-  get apellido() {
-    return this.formularioPaciente.get('apellido');
-  }
-  get edad() {
-    return this.formularioPaciente.get('edad');
-  }
-  get dni() {
-    return this.formularioPaciente.get('dni');
-  }
-  get obraSocial() {
-    return this.formularioPaciente.get('obraSocial');
-  }
-  get email() {
-    return this.formularioPaciente.get('email');
-  }
-
   registroPaciente(): void {
     if (this.formularioPaciente.valid) {
   
       const unPaciente = new Paciente(
-        this.nombre.value,
-        this.apellido.value,
-        this.edad.value,
-        Number(this.dni.value),
-        this.email.value,
+        this.formularioPaciente.value.nombre,
+        this.formularioPaciente.value.apellido,
+        this.formularioPaciente.value.edad,
+        Number(this.formularioPaciente.value.dni),
+        this.formularioPaciente.value.email,
         this.formularioPaciente.value.password,
         this.fileImagenPerfil1,
         this.fileImagenPerfil2,
-        this.obraSocial.value
+        this.formularioPaciente.value.obraSocial
       );
 
       console.log('Un paciente', unPaciente);
-      //this.emitPaciente.emit(unPaciente);
+      this.emitPaciente.emit(unPaciente);
     } else {
       console.log('Error formulario invalido');
     }

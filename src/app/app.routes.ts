@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { FormPacienteComponent } from './componentes-form/form-paciente/form-paciente.component';
 import { LoginComponent } from './auth/login/login.component';
+import { RegistroComponent } from './auth/registro/registro.component';
 
 export const routes: Routes = [
   {
@@ -9,6 +10,10 @@ export const routes: Routes = [
   },
   {
     path: 'paciente',
-    component: FormPacienteComponent
-  }
+    component: FormPacienteComponent,
+  },
+  {
+    path: 'registro',
+    component: RegistroComponent,
+  },
 ];

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Especialista } from '../../auth/models/usuario.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-especialista',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-especialista.component.html',
   styleUrl: './form-especialista.component.css',
 })
@@ -18,8 +19,11 @@ export class FormEspecialistaComponent {
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       edad: ['', [Validators.required, Validators.min(18)]],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-      especidalidad: ['',[Validators.required]],
-      otraEspecialidad: ['',[Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      especidalidad: ['', [Validators.required]],
+      otraEspecialidad: [
+        '',
+        [Validators.required, Validators.pattern('^[a-zA-Z]+$')],
+      ],
       email: [
         '',
         [

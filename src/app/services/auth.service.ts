@@ -12,26 +12,32 @@ export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
 
-  async registro(usuario: any, path: string) {
+  async registro(usuario: Paciente | Especialista) {
     try {
       const crearUsuario = createUserWithEmailAndPassword(
         this.auth,
         usuario.email,
         usuario.password
       );
-      const urlPerfil1 = this.subirImagen(path, usuario.imagen);
-      const urlPerfil2 = this.subirImagen(path, usuario.imagen_dos);
+       const path = `usuarios/${usuario.dni}/`;
+       const urlPerfil1 = await this.subirImagen(`${path}_perfil1`,usuario.imagen);
 
-      const unPaciente = {
-        ...usuario,
-        imagen: urlPerfil1,
-        imagen_dos: urlPerfil2,
-      };
+       let data: any = {
+         ...usuario,
+         imagen: urlPerfil1,
+       };
+
+       // Si es un Paciente, subimos la segunda imagen
+       if ('imagen_dos' in usuario) {
+         const urlPerfil2 = await this.subirImagen(`${path}_perfil2`,usuario.imagen_dos);
+         data.imagen_dos = urlPerfil2;
+       }
+
 
       // Elimino la contraseña antes de guardar en Firebase
       const { password, ...paciente } = usuario;
       this.guardarUsuario(paciente, 'usuarios');
-    } catch(error){
+    } catch (error) {
       throw error;
     }
   }
