@@ -1,4 +1,4 @@
-/* .container-imagen {
+ .container-imagen {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,7 +8,7 @@
     background-repeat: no-repeat center;
     background-size: cover;
 }
-
+/*
 .container {
     width: 800px;
     height: 500px;

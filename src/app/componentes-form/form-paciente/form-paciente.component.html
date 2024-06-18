@@ -1,84 +1,138 @@
-<form [formGroup]="formularioPaciente" (ngSubmit)="registroPaciente">
-   <div class="input-box form-floating mb-3">
-      <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese su nombre" formControlName="nombre"/>
-      <i class="fa-regular fa-user icon"></i>
-      <label for="inputNombre">Nombre</label>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['nombre'].errors && formularioPaciente.controls['nombre'].touched">
-      <div *ngIf="formularioPaciente.controls['nombre'].errors['required']">Error, ingrese su nombre.</div>
-      <div *ngIf="formularioPaciente.controls['nombre'].errors['pattern']">Error, solo se permite letras.</div>
-   </div>
-   <div class="input-box form-floating mb-3">
-      <input type="text" class="form-control" id="inputApellido" placeholder="Ingrese su apellido" formControlName="apellido"/>
-      <i class="fa-regular fa-user icon"></i>
-      <label for="inputApellido">Apellido</label>
-   </div>
-   <div class="col-md-6">
-      <label for="edad" class="form-label">Edad</label>
-      <input type="number" class="form-control" id="edad" formControlName="edad">
-      <div class="validators" *ngIf="formularioPaciente.controls['edad'].errors && formularioPaciente.controls['edad'].touched">
-         <label *ngIf="formularioPaciente.controls['edad'].errors['required']">Error, ingrese su edad.</label>
-         <label *ngIf="formularioPaciente.controls['edad'].errors['min']">Debe ser mayor de 18 años para registrarse.</label>
+<div class="col-md-7 col-lg-8 d-flex justify-content-center align-items-center" style="margin: 0 auto; margin-top: 80px;">
+  <form [formGroup]="formularioPaciente" (ngSubmit)="registroPaciente()">
+    <div class="row">
+      <!-- Primer Fila -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Ingrese su nombre" formControlName="nombre">
+          <mat-error *ngIf="formularioPaciente.controls['nombre'].errors?.['required']">
+            Error, ingrese su nombre.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['nombre'].errors?.['pattern']">
+            Error, solo se permite letras.
+          </mat-error>
+        </mat-form-field>
       </div>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['apellido'].errors && formularioPaciente.controls['apellido'].touched">
-      <div *ngIf="formularioPaciente.controls['apellido'].errors['required']">Error, ingrese su apellido.</div>
-      <div *ngIf="formularioPaciente.controls['apellido'].errors['pattern']">Error, solo se permite letras.</div>
-   </div>
-   <div class="input-box">
-      <label for="dni" class="form-label">DNI</label>
-      <input type="text" class="form-control" id="dni" formControlName="dni"/>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['dni'].errors && formularioPaciente.controls['dni'].touched">
-      <label *ngIf="formularioPaciente.controls['dni'].errors['required']">Error, ingrese su DNI.</label>
-      <label *ngIf="formularioPaciente.controls['dni'].errors['pattern']">Error, el DNI debe ser de 8 números.</label>
-   </div>
-   <div class="input-box form-floating mb-3">
-      <input type="text" class="form-control" id="inputObraSocial" placeholder="Ingrese su obra social" formControlName="obraSocial"/>
-      <i class="fa-regular fa-user icon"></i>
-      <label for="inputObraSocial">Obra Social</label>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['obraSocial'].errors && formularioPaciente.controls['obraSocial'].touched">
-      <div *ngIf="formularioPaciente.controls['obraSocial'].errors['required']">Error, ingrese su obra social.</div>
-      <div *ngIf="formularioPaciente.controls['obraSocial'].errors['pattern']">Error, solo se permite letras.</div>
-   </div>
-   <div class="input-box form-floating mb-3">
-      <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su email" formControlName="email" autocomplete="email"/>
-      <i class="fa-regular fa-envelope icon"></i>
-      <label for="inputEmail">Email</label>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['email'].errors && formularioPaciente.controls['email'].touched">
-      <div *ngIf="formularioPaciente.controls['email'].errors['required']">Error, ingrese el email.</div>
-      <div *ngIf="formularioPaciente.controls['email'].errors['pattern']">Error, ingrese un email válido.</div>
-   </div>
-   <div class="input-box form-floating mb-3">
-   <input type="password" class="form-control" id="inputPassword" formControlName="password" placeholder="Ingrese su contraseña" autocomplete="password"/>
-      <i class="fa-solid fa-lock icon"></i>
-      <label for="inputPassword">Password</label>
-   </div>
-   <div class="validators" *ngIf="formularioPaciente.controls['password'].errors && formularioPaciente.controls['password'].touched">
-      <div *ngIf="formularioPaciente.controls['password'].errors['required']">Error, ingrese la contraseña.</div>
-      <div *ngIf="formularioPaciente.controls['password'].errors['minlength']">Ingresar como minimo 5 caracteres</div>
-      <div *ngIf="formularioPaciente.controls['password'].errors['maxlength']">Solo se permite hasta 10 caracteres.</div>
-   </div>
-   <div class="row mb-2">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Apellido</mat-label>
+          <input matInput placeholder="Ingrese su apellido" formControlName="apellido">
+          <mat-error *ngIf="formularioPaciente.controls['apellido'].errors?.['required']">
+            Error, ingrese su apellido.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['apellido'].errors?.['pattern']">
+            Error, solo se permite letras.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Segunda Fila -->
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Edad</mat-label>
+          <input matInput type="number" placeholder="Ingrese su edad" formControlName="edad" step="1">
+          <mat-error *ngIf="formularioPaciente.controls['edad'].errors?.['required']">
+            Error, ingrese su edad.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['edad'].errors?.['min']">
+            Debe ser mayor de 18 años para registrarse.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['edad'].errors?.['pattern']">
+            Solo se permite números enteros.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>DNI</mat-label>
+          <input matInput placeholder="Ingrese su DNI" formControlName="dni">
+          <mat-error *ngIf="formularioPaciente.controls['dni'].errors?.['required']">
+            Error, ingrese su DNI.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['dni'].errors?.['pattern']">
+            Error, el DNI debe ser de 8 números.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Obra Social</mat-label>
+          <input matInput placeholder="Ingrese su obra social" formControlName="obraSocial">
+          <mat-error *ngIf="formularioPaciente.controls['obraSocial'].errors?.['required']">
+            Error, ingrese su obra social.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Tercera Fila -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" placeholder="Ingrese su email" formControlName="email">
+          <mat-error *ngIf="formularioPaciente.controls['email'].errors?.['required']">
+            Error, ingrese el email.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['email'].errors?.['email']">
+            Error, ingrese un email válido.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" placeholder="Ingrese su contraseña" formControlName="password">
+          <mat-error *ngIf="formularioPaciente.controls['password'].errors?.['required']">
+            Error, ingrese la contraseña.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['password'].errors?.['minlength']">
+            Ingresar como mínimo 5 caracteres.
+          </mat-error>
+          <mat-error *ngIf="formularioPaciente.controls['password'].errors?.['maxlength']">
+            Solo se permite hasta 10 caracteres.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Cuarta Fila - Imagenes de Perfil -->
+    <div class="row">
       <div class="col-8 text-start">
-        <label for="imagen_a" class="form-label">Imágen de perfil 1</label>
-        <input class="form-control form-control-sm" id="imagen_a" type="file" (change)="imagenPerfil1($event)" />
+        <label for="imagen_a" class="form-label">Imagen de perfil 1</label>
+        <input formControlName="perfil1" class="form-control form-control-sm" id="imagen_a" type="file" (change)="imagenPerfil1($event)">
+        <mat-error class="image-error" *ngIf="campoInvalido('perfil1')">
+            Error, se requiere seleccionar una foto de perfil.
+         </mat-error>
       </div>
       <div class="col-3">
-        <img *ngIf="urlImagenPerfil1" [src]="urlImagenPerfil1" alt="Foto de perfil">
+        <img *ngIf="urlImagenPerfil1" [src]="urlImagenPerfil1" alt="Foto de perfil" class="img-thumbnail">
       </div>
-  </div>
-  <div class="row mb-2">
+    </div>
+    <div class="row">
       <div class="col-8 text-start">
-         <label for="imagen_b" class="form-label">Imágen de perfil 2</label>
-         <input class="form-control form-control-sm" id="imagen_b" type="file" (change)="imagenPerfil2($event)" />
-       </div>
-      <div class="col-3">
-         <img *ngIf="urlImagenPerfil2" [src]="urlImagenPerfil2" alt="Foto de perfil">
+        <label for="imagen_b" class="form-label">Imagen de perfil 2</label>
+        <input formControlName="perfil2" class="form-control form-control-sm" id="imagen_b" type="file" (change)="imagenPerfil2($event)">
+        <mat-error class="image-error" *ngIf="campoInvalido('perfil2')">
+            Error, se requiere seleccionar una foto de perfil.
+         </mat-error>
       </div>
-  </div>
-   <button type="submit" class="btn-registro" [disabled]="formularioPaciente.invalid" (click)="registroPaciente()">Registrarse</button>
-   {{formularioPaciente.value | json}}
-</form>
+      <div class="col-3">
+        <img *ngIf="urlImagenPerfil2" [src]="urlImagenPerfil2" alt="Foto de perfil" class="img-thumbnail">
+      </div>
+    </div>
+
+    <!-- Botón de Registro -->
+    <div class="row mt-3">
+      <div class="col-12">
+        <button mat-raised-button color="primary" type="submit" [disabled]="formularioPaciente.invalid">
+          Registrarse
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

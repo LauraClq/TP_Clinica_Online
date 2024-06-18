@@ -4,7 +4,6 @@ import { Auth, createUserWithEmailAndPassword} from '@angular/fire/auth';
 import { Especialista, Paciente, Usuario } from '../auth/models/usuario.model';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -14,45 +13,75 @@ export class AuthService {
 
   async registro(usuario: Paciente | Especialista) {
     try {
-      const crearUsuario = createUserWithEmailAndPassword(
+      const urlPerfil1 = await this.subirImagen(
+        `${usuario.dni}/perfil1`,
+        usuario.imagen
+      );
+      let data: any = { ...usuario, imagen: urlPerfil1 };
+
+      // Si es un Paciente, subimos la segunda imagen
+      if ('imagen_dos' in usuario) {
+        const urlPerfil2 = await this.subirImagen(
+          `${usuario.dni}/perfil2`,
+          usuario.imagen_dos
+        );
+        data.imagen_dos = urlPerfil2;
+      }
+
+      await createUserWithEmailAndPassword(
         this.auth,
         usuario.email,
         usuario.password
       );
-       const path = `usuarios/${usuario.dni}/`;
-       const urlPerfil1 = await this.subirImagen(`${path}_perfil1`,usuario.imagen);
-
-       let data: any = {
-         ...usuario,
-         imagen: urlPerfil1,
-       };
-
-       // Si es un Paciente, subimos la segunda imagen
-       if ('imagen_dos' in usuario) {
-         const urlPerfil2 = await this.subirImagen(`${path}_perfil2`,usuario.imagen_dos);
-         data.imagen_dos = urlPerfil2;
-       }
-
 
       // Elimino la contraseña antes de guardar en Firebase
       const { password, ...paciente } = usuario;
-      this.guardarUsuario(paciente, 'usuarios');
+      await this.guardarUsuario(paciente, `usuarios/`);
     } catch (error) {
       throw error;
     }
   }
 
   //Agregar un usuario en una collecion
-  private guardarUsuario(data: any, path: string) {
+  private async guardarUsuario(data: any, path: string) {
     const col = collection(this.firestore, path);
-    addDoc(col, data);
+    try {
+      const docRef = await addDoc(col, data);
+      console.log('Documento agregado con ID:', docRef.id);
+    } catch (error) {
+      throw new Error('Error, no se pudo guardar el usuario en Firestore.');
+    }
   }
 
   //Subir Imagenes
   async subirImagen(path: string, url: string) {
-    const storage = getStorage();
-    const storageRef = ref(storage, path);
-    await uploadString(storageRef, url, 'data_url');
-    return getDownloadURL(storageRef);
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, path);
+      await uploadString(storageRef, url, 'data_url');
+      return await getDownloadURL(storageRef);
+    } catch (error) {
+      throw new Error('Error, no se pudo subir la imagen.');
+    }
   }
+
+  public crearMensajeError(error: string): string {
+    let mensajeTipoError!: string;
+    switch (error) {
+      case 'auth/email-already-in-use':
+        mensajeTipoError = 'El email ya está registrado.';
+        break;
+      case 'auth/wrong-password':
+        mensajeTipoError = 'La contraseña ingresada es incorrecta';
+        break;
+      case 'auth/invalid-email':
+        mensajeTipoError = 'La dirección de correo electrónico es incorrecta.';
+        break;
+      default:
+        mensajeTipoError = 'Se produjo un error durante el inicio de sesión.';
+        break;
+    }
+    return mensajeTipoError;
+  }
+
 }

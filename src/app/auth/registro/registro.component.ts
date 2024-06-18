@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
@@ -6,6 +6,8 @@ import { Especialista, Paciente } from '../models/usuario.model';
 import { FormPacienteComponent } from '../../componentes-form/form-paciente/form-paciente.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormEspecialistaComponent } from '../../componentes-form/form-especialista/form-especialista.component';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { AuthService } from '../../services/auth.service';
     MatButtonModule,
     MatDialogModule,
     FormPacienteComponent,
+    FormEspecialistaComponent,
     CommonModule,
   ],
   templateUrl: './registro.component.html',
@@ -25,8 +28,13 @@ export class RegistroComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   private cdr = inject(ChangeDetectorRef);
   private authServicio = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
   public tipoUsuario: any;
   public flagPaciente: boolean;
+  public loading: boolean = false;
+  public mensaje: string;
+  @ViewChild(FormPacienteComponent)
+  formPacienteComponent: FormPacienteComponent;
 
   ngOnInit(): void {
     this.openModal();
@@ -36,9 +44,9 @@ export class RegistroComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'especialista') {
-        this.tipoUsuario = Especialista;
+        this.tipoUsuario = 'especialista';
       } else {
-        this.tipoUsuario = Paciente;
+        this.tipoUsuario = 'paciente';
         this.flagPaciente = true;
       }
       this.cdr.detectChanges();
@@ -47,8 +55,30 @@ export class RegistroComponent implements OnInit {
     });
   }
 
+  //  setTipoUsuario(tipo: 'paciente' | 'especialista') {
+  //   this.tipoUsuario = tipo;
+  // }
+
   registro(usuario: Paciente | Especialista) {
-    this.authServicio.registro(usuario);
+    this.loading = true;
+    this.authServicio
+      .registro(usuario)
+      .then(() => {
+        this.loading = false;
+        this.snackBar.open('Usuario registrado exitosamente', 'Cerrar', {
+          duration: 3000,
+        });
+        this.formPacienteComponent.limpiarFormulario();
+      })
+      .catch((error) => {
+        this.mensaje = this.authServicio.crearMensajeError(error.code);
+        this.loading = false;
+        this.snackBar.open(
+          this.mensaje || 'Error al registrar usuario',
+          'Cerrar',
+          { duration: 3000 }
+        );
+      });
   }
 }
 

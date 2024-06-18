@@ -4,20 +4,31 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Paciente } from '../../auth/models/usuario.model';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+
 
 
 @Component({
   selector: 'app-form-paciente',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatError,
+    MatLabel,
+    MatFormField,
+    MatInput,
+  ],
   templateUrl: './form-paciente.component.html',
   styleUrl: './form-paciente.component.css',
 })
 export class FormPacienteComponent {
   public formularioPaciente: FormGroup;
+  public mensajeImagenError: boolean = false;
   public urlImagenPerfil1: string | ArrayBuffer;
   public urlImagenPerfil2: string | ArrayBuffer;
   public fileImagenPerfil1: string;
@@ -26,11 +37,17 @@ export class FormPacienteComponent {
   @Output() emitPaciente = new EventEmitter<Paciente>();
 
   constructor(private fromBuilder: FormBuilder) {
-  
     this.formularioPaciente = this.fromBuilder.group({
       nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      edad: ['', [Validators.required, Validators.min(18)]],
+      edad: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]+$'),
+          Validators.min(18),
+        ],
+      ],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
       obraSocial: ['', [Validators.required]],
       email: [
@@ -48,13 +65,14 @@ export class FormPacienteComponent {
           Validators.maxLength(10),
           Validators.minLength(5),
         ],
-      ]
+      ],
+      perfil1: ['', Validators.required],
+      perfil2: ['', Validators.required],
     });
   }
 
   registroPaciente(): void {
     if (this.formularioPaciente.valid) {
-  
       const unPaciente = new Paciente(
         this.formularioPaciente.value.nombre,
         this.formularioPaciente.value.apellido,
@@ -75,26 +93,43 @@ export class FormPacienteComponent {
   }
 
   //Evento -Almacenar las imagenes seleccionadas
-  imagenPerfil1(event: any) {
-    const file = event.target.files[0]; //obtengo la imagen seleccionada
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.urlImagenPerfil1 = reader.result;
-      this.fileImagenPerfil1 = reader.result as string;
-      //console.log('imagen1', this.fileImagenPerfil1);
-    };
-    reader.readAsDataURL(file);
+  imagenPerfil1(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.urlImagenPerfil1 = reader.result as string;
+        this.fileImagenPerfil1 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  imagenPerfil2(event: any) {
+  imagenPerfil2(event: any): void {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.urlImagenPerfil2 = reader.result;
-      this.fileImagenPerfil2 = reader.result as string;
-      //console.log('imagen2', this.fileImagenPerfil2);
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.urlImagenPerfil2 = reader.result as string;
+        this.fileImagenPerfil2 = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Getter para acceder fácilmente a los controles del formulario
+  get f() {
+    return this.formularioPaciente.controls;
+  }
+
+  // Método para validar si el campo tiene errores y ha sido tocado
+  campoInvalido(nombreCampo: string) {
+    const control = this.f[nombreCampo];
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  limpiarFormulario() {
+    this.formularioPaciente.reset();
   }
 }
 
