@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -34,6 +34,7 @@ export class FormPacienteComponent {
   public fileImagenPerfil1: string;
   public fileImagenPerfil2: string;
 
+  @Input() tipoUsuario: 'paciente';
   @Output() emitPaciente = new EventEmitter<Paciente>();
 
   constructor(private fromBuilder: FormBuilder) {
@@ -49,7 +50,7 @@ export class FormPacienteComponent {
         ],
       ],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-      obraSocial: ['', [Validators.required]],
+      obraSocial: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       email: [
         '',
         [

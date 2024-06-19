@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Especialista } from '../../auth/models/usuario.model';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,7 @@ export class FormEspecialistaComponent {
   public urlImagenPerfil1: string | ArrayBuffer;
   public fileImagenPerfil1: string;
 
+  @Input() tipoUsuario: 'especialista';
   @Output() emitEspecialista = new EventEmitter<Especialista>();
 
   constructor(private fromBuilder: FormBuilder) {

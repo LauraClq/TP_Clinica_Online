@@ -14,7 +14,7 @@ export class AuthService {
   async registro(usuario: Paciente | Especialista) {
     try {
       const urlPerfil1 = await this.subirImagen(
-        `${usuario.dni}/perfil1`,
+        `${usuario.email}/perfil1`,
         usuario.imagen
       );
       let data: any = { ...usuario, imagen: urlPerfil1 };
@@ -28,7 +28,7 @@ export class AuthService {
         data.imagen_dos = urlPerfil2;
       }
 
-      await createUserWithEmailAndPassword(
+      createUserWithEmailAndPassword(
         this.auth,
         usuario.email,
         usuario.password
@@ -36,7 +36,7 @@ export class AuthService {
 
       // Elimino la contraseña antes de guardar en Firebase
       const { password, ...paciente } = usuario;
-      await this.guardarUsuario(paciente, `usuarios/`);
+      this.guardarUsuario(paciente, `usuarios/`);
     } catch (error) {
       throw error;
     }
@@ -79,6 +79,7 @@ export class AuthService {
         break;
       default:
         mensajeTipoError = 'Se produjo un error durante el inicio de sesión.';
+        console.log(error);
         break;
     }
     return mensajeTipoError;

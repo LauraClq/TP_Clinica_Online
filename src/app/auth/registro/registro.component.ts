@@ -29,7 +29,7 @@ export class RegistroComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private authServicio = inject(AuthService);
   private snackBar = inject(MatSnackBar);
-  public tipoUsuario: any;
+  public tipousuario: 'paciente' | 'especialista';
   public flagPaciente: boolean;
   public loading: boolean = false;
   public mensaje: string;
@@ -43,15 +43,11 @@ export class RegistroComponent implements OnInit {
   openModal() {
     const dialogRef = this.dialog.open(ModalComponent);
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'especialista') {
-        this.tipoUsuario = 'especialista';
-      } else {
-        this.tipoUsuario = 'paciente';
-        this.flagPaciente = true;
-      }
+      this.tipousuario =
+        result === 'especialista' ? 'especialista' : 'paciente';
       this.cdr.detectChanges();
       //console.log(`Dialog result: ${result}`);
-      //console.log(`Dialog result: ${this.tipoUsuario}`);
+      console.log(`Dialog result: ${this.tipousuario}`);
     });
   }
 
