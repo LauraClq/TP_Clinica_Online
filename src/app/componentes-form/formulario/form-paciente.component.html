@@ -1,0 +1,177 @@
+<div class="col-md-7 col-lg-8 d-flex justify-content-center align-items-center" style="margin: 0 auto; margin-top: 80px; background-color: azure;">
+  <form [formGroup]="formularioUsuario" (submit)="registroPaciente()">
+    <!-- Primer Fila -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Nombre</mat-label>
+          <input matInput type="text" placeholder="Ingrese su nombre" formControlName="nombre">
+            <mat-error *ngIf="formularioUsuario.controls['nombre'].errors?.['required'] && formularioUsuario.controls['nombre'].touched">Error, ingrese su nombre.</mat-error>
+            <mat-error *ngIf="formularioUsuario.controls['nombre'].errors?.['pattern'] && formularioUsuario.controls['nombre'].touched">Error, solo se permite letras.</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Apellido</mat-label>
+          <input matInput type="text" placeholder="Ingrese su apellido" formControlName="apellido">
+          <mat-error *ngIf="formularioUsuario.controls['apellido'].errors?.['required'] && formularioUsuario.controls['apellido'].touched">
+            Error, ingrese su apellido.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['apellido'].errors?.['pattern'] && formularioUsuario.controls['apellido'].touched">
+            Error, solo se permite letras.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Segunda Fila -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Edad</mat-label>
+          <input matInput type="number" placeholder="Ingrese su edad" formControlName="edad" step="1">
+          <mat-error *ngIf="formularioUsuario.controls['edad'].errors?.['required'] && formularioUsuario.controls['edad'].touched">
+            Error, ingrese su edad.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['edad'].errors?.['min'] && formularioUsuario.controls['edad'].touched">
+            Debe ser mayor de 18 años para registrarse.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['edad'].errors?.['pattern'] && formularioUsuario.controls['edad'].touched">
+            Solo se permite números enteros.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>DNI</mat-label>
+          <input matInput placeholder="Ingrese su DNI" formControlName="dni">
+          <mat-error *ngIf="formularioUsuario.controls['dni'].errors?.['required'] && formularioUsuario.controls['dni'].touched">
+            Error, ingrese su DNI.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['dni'].errors?.['pattern'] && formularioUsuario.controls['dni'].touched">
+            Error, el DNI debe ser de 8 números.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Tercera Fila -->
+    <div class="row">
+      <ng-container *ngIf="usuarioElegido == 'paciente'">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Obra Social</mat-label>
+            <input matInput type="text" placeholder="Ingrese su obra social" formControlName="obraSocial">
+            <mat-error *ngIf="formularioUsuario.controls['obraSocial'].errors?.['required'] && formularioUsuario.controls['obraSocial'].touched">
+              Error, ingrese su obra social.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    
+      <ng-container *ngIf="usuarioElegido === 'especialista'">
+        <div class="col-md-4">
+          <label class="text-muted" for="especialidad">Especialidad</label>
+          <mat-form-field>
+            <mat-label>Select an option</mat-label>
+            <mat-select [(value)]="selected">
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Option 1</mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Otra Especialidad</mat-label>
+            <input matInput placeholder="Escriba otra especialidad">
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Cuarta Fila -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" placeholder="Ingrese su email" formControlName="email">
+          <mat-error *ngIf="formularioUsuario.controls['email'].errors?.['required'] && formularioUsuario.controls['email'].touched">
+            Error, ingrese el email.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['email'].errors?.['email'] && formularioUsuario.controls['email'].touched">
+            Error, ingrese un email válido.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" placeholder="Ingrese su contraseña" formControlName="password">
+          <mat-error *ngIf="formularioUsuario.controls['password'].errors?.['required'] && formularioUsuario.controls['password'].touched">
+            Error, ingrese la contraseña.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['password'].errors?.['minlength'] && formularioUsuario.controls['password'].touched">
+            Ingresar como mínimo 5 caracteres.
+          </mat-error>
+          <mat-error *ngIf="formularioUsuario.controls['password'].errors?.['maxlength'] && formularioUsuario.controls['password'].touched">
+            Solo se permite hasta 10 caracteres.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Cuarta Fila - Imagen de Perfil 1 -->
+    <div class="row">
+      <div class="col-8 text-start">
+        <label for="imagen_perfil1" class="form-label">Imagen de perfil 1</label>
+        <input formControlName="perfil1" class="form-control form-control-sm" id="imagen_perfil1" type="file" (change)="imagenPerfil1($event)">
+        <mat-error class="image-error" *ngIf="campoInvalido('perfil1')">
+            Error, se requiere seleccionar una foto de perfil.
+         </mat-error>
+      </div>
+      <div class="col-3">
+        <img *ngIf="urlImagenPerfil1" [src]="urlImagenPerfil1" alt="Foto de perfil" class="img-thumbnail" height="70px">
+      </div>
+    </div>
+
+    <!-- Quinta Fila - Imagene de Perfil 2 -->
+      <ng-container *ngIf="usuarioElegido == 'paciente'">
+        <div class="row">
+          <div class="col-8 text-start">
+            <label for="imagen_perfil2" class="form-label">Imagen de perfil 2</label>
+            <input formControlName="perfil2" class="form-control form-control-sm" id="imagen_perfil2" type="file" (change)="imagenPerfil2($event)">
+            <mat-error class="image-error" *ngIf="campoInvalido('perfil2')">
+              Error, se requiere seleccionar una foto de perfil.
+            </mat-error>
+          </div>
+          <div class="col-3">
+            <img *ngIf="urlImagenPerfil2" [src]="urlImagenPerfil2" alt="Foto de perfil" class="img-thumbnail" height="70px">
+          </div>
+        </div>
+      </ng-container>
+
+    <!-- Botón de Registro -->
+    <div class="row mt-3">
+      <div class="col-12">
+        <button mat-raised-button color="primary" type="submit" [disabled]="formularioUsuario.invalid">
+          Registrarse
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Spinner
+  <div class="overlay" *ngIf="spinner">
+    <div class="heartbeatloader">
+      <svg class="svgdraw" width="100%" height="100%" viewBox="0 0 150 400" xmlns="http://www.w3.org/2000/svg">
+        <path class="path" d="M 0 200 l 40 0 l 5 -40 l 5 40 l 10 0 l 5 15 l 10 -140 l 10 220 l 5 -95 l 10 0 l 5 20 l 5 -20 l 30 0"
+        fill="transparent" stroke-width="4" stroke="black"></path>
+      </svg>
+    <div class="innercircle"></div>
+  <div class="outercircle"></div> -->
+
+</div>
+
+

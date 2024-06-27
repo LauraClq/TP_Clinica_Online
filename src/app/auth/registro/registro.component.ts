@@ -3,11 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import { Especialista, Paciente } from '../models/usuario.model';
-import { FormPacienteComponent } from '../../componentes-form/form-paciente/form-paciente.component';
+import { FormPacienteComponent } from '../../componentes-form/formulario/form-paciente.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormEspecialistaComponent } from '../../componentes-form/form-especialista/form-especialista.component';
 
 
 @Component({
@@ -17,7 +16,6 @@ import { FormEspecialistaComponent } from '../../componentes-form/form-especiali
     MatButtonModule,
     MatDialogModule,
     FormPacienteComponent,
-    FormEspecialistaComponent,
     CommonModule,
   ],
   templateUrl: './registro.component.html',
@@ -29,7 +27,7 @@ export class RegistroComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private authServicio = inject(AuthService);
   private snackBar = inject(MatSnackBar);
-  public tipousuario: 'paciente' | 'especialista';
+  public perfilUsuario: 'paciente' | 'especialista';
   public flagPaciente: boolean;
   public loading: boolean = false;
   public mensaje: string;
@@ -43,11 +41,11 @@ export class RegistroComponent implements OnInit {
   openModal() {
     const dialogRef = this.dialog.open(ModalComponent);
     dialogRef.afterClosed().subscribe((result) => {
-      this.tipousuario =
+      this.perfilUsuario =
         result === 'especialista' ? 'especialista' : 'paciente';
       this.cdr.detectChanges();
       //console.log(`Dialog result: ${result}`);
-      console.log(`Dialog result: ${this.tipousuario}`);
+      //console.log(`Dialog result: ${this.tipousuario}`);
     });
   }
 
@@ -56,19 +54,18 @@ export class RegistroComponent implements OnInit {
   // }
 
   registro(usuario: Paciente | Especialista) {
-    this.loading = true;
+    this.formPacienteComponent.spinner = true;
     this.authServicio
       .registro(usuario)
       .then(() => {
-        this.loading = false;
+        this.formPacienteComponent.spinner = false;
         this.snackBar.open('Usuario registrado exitosamente', 'Cerrar', {
           duration: 3000,
         });
-        this.formPacienteComponent.limpiarFormulario();
       })
       .catch((error) => {
         this.mensaje = this.authServicio.crearMensajeError(error.code);
-        this.loading = false;
+        this.formPacienteComponent.spinner = false;
         this.snackBar.open(
           this.mensaje || 'Error al registrar usuario',
           'Cerrar',

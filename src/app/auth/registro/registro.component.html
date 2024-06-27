@@ -1,8 +1,7 @@
 <section class="container-imagen">
   <!-- <button (click)="setTipoUsuario('paciente')">Paciente</button>
   <button (click)="setTipoUsuario('especialista')">Especialista</button> -->
-  <app-form-paciente *ngIf="tipousuario === 'paciente'" [tipoUsuario]="tipousuario" (emitPaciente)=registro($event)></app-form-paciente>
-  <app-form-especialista *ngIf="tipousuario === 'especialista'" [tipoUsuario]="tipousuario" (emitEspecialista)=registro($event)></app-form-especialista>
+  <app-form-paciente [usuarioElegido]="perfilUsuario" (emitPaciente)=registro($event)></app-form-paciente>
 </section>
 
 
