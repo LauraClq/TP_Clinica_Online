@@ -1,52 +1,55 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Paciente } from '../../auth/models/usuario.model';
-import { MatError, MatFormField, MatFormFieldModule, MatLabel, FloatLabelType } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { RecaptchaModule } from 'ng-recaptcha';
-import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
+import { FormBuilder, FormGroup, Validators, NgForm, FormsModule, ReactiveFormsModule, AbstractControl, FormControl, FormGroupDirective } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
+  }
+}
 
 @Component({
-  selector: 'app-form-paciente',
+  selector: 'app-formulario',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatError,
-    MatLabel,
-    MatFormField,
-    MatInput,
-    RecaptchaModule,
+    FormsModule,
     MatFormFieldModule,
-    MatSelect,
-    MatOption,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule
   ],
-  templateUrl: './form-paciente.component.html',
-  styleUrl: './form-paciente.component.css',
+  templateUrl: './formulario.component.html',
+  styleUrl: './formulario.component.css',
 })
-export class FormPacienteComponent implements OnInit {
+export class FormularioComponent implements OnInit {
   public formularioUsuario: FormGroup;
-  public especialidades: string[] = [
-    'Odontologia',
-    'Dermatologia',
-    'Psicologia',
-  ];
-  public mensajeImagenError: boolean = false;
   public urlImagenPerfil1: string | ArrayBuffer;
   public urlImagenPerfil2: string | ArrayBuffer;
   public spinner: boolean = false;
-  selected = 'option2';
+  public mensajeImagen: boolean = false;
 
   @Input() usuarioElegido: string;
-  @Output() emitPaciente = new EventEmitter<Paciente>();
+  @Output() emitUsuario = new EventEmitter<any>(); //por el momento lo dejo asi
+  matcher = new MyErrorStateMatcher();
 
   constructor(private fromBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.formularioUsuario = this.fromBuilder.group({
-      nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      nombre: [null, [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       edad: [
         '',
@@ -54,6 +57,7 @@ export class FormPacienteComponent implements OnInit {
           Validators.required,
           Validators.pattern('^[0-9]+$'),
           Validators.min(18),
+          Validators.max(90),
         ],
       ],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
@@ -77,12 +81,12 @@ export class FormPacienteComponent implements OnInit {
           Validators.minLength(5),
         ],
       ],
-      perfil1: ['', Validators.required],
-      perfil2: ['', Validators.required],
+      perfil1: ['', [Validators.required]],
+      perfil2: ['', [Validators.required]],
     });
   }
 
-  get nombre() {
+  get nombre(): AbstractControl {
     return this.formularioUsuario.get('nombre')!;
   }
 
@@ -126,33 +130,17 @@ export class FormPacienteComponent implements OnInit {
     return this.formularioUsuario.get('perfil2')!;
   }
 
-  registroPaciente(): void {
+  registroUsuario(): void {
     if (this.formularioUsuario.valid) {
-      const unPaciente = new Paciente(
-        this.nombre.value,
-        this.apellido.value,
-        this.edad.value,
-        this.dni.value,
-        this.email.value,
-        this.password.value,
-        this.perfil1.value,
-        this.perfil2.value,
-        this.obraSocial.value
-      );
-
-      console.log('Un paciente', unPaciente);
-      this.emitPaciente.emit(unPaciente);
-    } else {
-      console.log('Error formulario invalido');
     }
   }
 
   //Evento - Visualizar las imagenes seleccionadas
   imagenPerfil1(event: any): void {
-    const file = event.target.files[0];
+    const file = event.target.file[0];
     const imagenId = event.target.id;
 
-    if (file) {
+    if (file.size < 100 * 1024) {
       const reader = new FileReader();
       this.formularioUsuario.get(imagenId)?.setValue(file);
       reader.readAsDataURL(this.formularioUsuario.get(imagenId)?.value);
@@ -167,7 +155,7 @@ export class FormPacienteComponent implements OnInit {
     const file = event.target.files[0];
     const imagenId = event.target.id;
 
-    if (file) {
+    if (file.size < 100 * 1024) {
       const reader = new FileReader();
       this.formularioUsuario.get(imagenId)?.setValue(file);
       reader.readAsDataURL(this.formularioUsuario.get(imagenId)?.value);
@@ -189,35 +177,11 @@ export class FormPacienteComponent implements OnInit {
     return control.invalid && (control.dirty || control.touched);
   }
 
-  // In your component class
-  addOtraEspecialidad(): void {
-    const nuevaEspecialidad =
-      this.formularioUsuario.get('otraEspecialidad')!.value;
-
-    // Check if the nuevaEspecialidad is not already in the array
-    if (nuevaEspecialidad && !this.especialidades.includes(nuevaEspecialidad)) {
-      this.especialidades.unshift(nuevaEspecialidad);
-
-      this.formularioUsuario.get('especialidad')!.setValue(nuevaEspecialidad);
-      this.formularioUsuario.get('otraEspecialidad')!.setValue('');
-    }
-  }
-
-  // Custom validator function
-  maxSelectedOptionsValidator(maxOptions: number) {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const selectedOptions = control.value;
-
-      if (
-        Array.isArray(selectedOptions) &&
-        selectedOptions.length > maxOptions
-      ) {
-        return { maxOptionsExceeded: true };
-      }
-
-      return null;
-    };
-  }
+  // reseteo(){
+  // this.formularioUsuario.reset(); // Restablece los valores de los controles al inicial
+  // this.formularioUsuario.patchValue(this.formularioUsuario.value); // Asegura que los valores sean actualizados
+  // Object.keys(this.formularioUsuario.controls).forEach((key) => {
+  //   this.formularioUsuario.controls[key].setErrors(null); // Elimina los errores de validación
+  // });
+  // }
 }
-
-

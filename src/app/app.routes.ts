@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { FormPacienteComponent } from './componentes-form/formulario/form-paciente.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegistroComponent } from './auth/registro/registro.component';
+import { FormularioComponent } from './componentes/formulario/formulario.component';
 
 export const routes: Routes = [
   {
@@ -9,8 +9,8 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'paciente',
-    component: FormPacienteComponent,
+    path: 'formulario',
+    component: FormularioComponent,
   },
   {
     path: 'registro',

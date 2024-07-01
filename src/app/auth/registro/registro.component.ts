@@ -3,10 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import { Especialista, Paciente } from '../models/usuario.model';
-import { FormPacienteComponent } from '../../componentes-form/formulario/form-paciente.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormularioComponent } from '../../componentes/formulario/formulario.component';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     MatButtonModule,
     MatDialogModule,
-    FormPacienteComponent,
+    FormularioComponent,
     CommonModule,
   ],
   templateUrl: './registro.component.html',
@@ -31,8 +31,6 @@ export class RegistroComponent implements OnInit {
   public flagPaciente: boolean;
   public loading: boolean = false;
   public mensaje: string;
-  @ViewChild(FormPacienteComponent)
-  formPacienteComponent: FormPacienteComponent;
 
   ngOnInit(): void {
     this.openModal();
@@ -54,18 +52,15 @@ export class RegistroComponent implements OnInit {
   // }
 
   registro(usuario: Paciente | Especialista) {
-    this.formPacienteComponent.spinner = true;
     this.authServicio
       .registro(usuario)
       .then(() => {
-        this.formPacienteComponent.spinner = false;
         this.snackBar.open('Usuario registrado exitosamente', 'Cerrar', {
           duration: 3000,
         });
       })
       .catch((error) => {
         this.mensaje = this.authServicio.crearMensajeError(error.code);
-        this.formPacienteComponent.spinner = false;
         this.snackBar.open(
           this.mensaje || 'Error al registrar usuario',
           'Cerrar',
